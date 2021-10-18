@@ -10,7 +10,12 @@ const Post = ({ post }) => {
 			<Divider width={0.5} orientation="vertical" />
 			<PostHeader post={post} />
 			<PostImage post={post} />
-			<PostFooter />
+			<View>
+				<PostFooter />
+				<Likes post={post} />
+				<Caption post={post} />
+				<Comment post={post} />
+			</View>
 		</View>
 	);
 };
@@ -70,7 +75,13 @@ const PostFooter = () => (
 		</View>
 		<View>
 			<TouchableOpacity>
-				<Text style={{ color: 'white' }}>Hola</Text>
+				<Icon
+					type={postFooterIcons[3].type}
+					imageStyle={styles.footerIcon}
+					name={postFooterIcons[3].icon}
+					size={24}
+					color={postFooterIcons[3].color}
+				/>
 			</TouchableOpacity>
 		</View>
 
@@ -85,6 +96,32 @@ const PostFooter = () => (
 // 		{/* <Image style={imageStyle} source={{ uri: imageUrl }} /> */}
 // 	</TouchableOpacity>
 // );
+const Likes = ({ post }) => (
+	<View style={{ flexDirection: 'row', marginTop: 4 }}>
+		<Text style={{ color: 'white', fontWeight: 'bold' }}>
+			{post.likes.toLocaleString('en')} likes
+		</Text>
+	</View>
+);
+
+const Caption = ({ post }) => (
+	<View style={{ marginTop: 5 }}>
+		<Text style={{ color: 'white' }}>
+			<Text style={{ fontWeight: '700', color: 'silver' }}>{post.user}</Text>
+			<Text> {post.caption}</Text>
+		</Text>
+	</View>
+);
+const Comment = ({ post }) => (
+	<View>
+		{!!post.comments.length && (
+			<Text style={{ color: 'gray' }}>
+				View{post.comments.length > 1 ? ' all' : ''}
+				{post.comments.length > 1 ? ` ${post.comments.length} comments...` : ' comment'}
+			</Text>
+		)}
+	</View>
+);
 
 export default Post;
 
