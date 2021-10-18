@@ -7,14 +7,17 @@ import { postFooterIcons } from '../../data/icons';
 const Post = ({ post }) => {
 	return (
 		<View style={{ marginBottom: 20 }}>
-			<Divider width={0.5} orientation="vertical" />
+			<Divider width={0.3} orientation="vertical" />
 			<PostHeader post={post} />
 			<PostImage post={post} />
 			<View>
 				<PostFooter />
-				<Likes post={post} />
-				<Caption post={post} />
-				<Comment post={post} />
+				<View style={{ marginHorizontal: 3 }}>
+					<Likes post={post} />
+					<Caption post={post} />
+					<CommentsSection post={post} />
+					<Comments post={post} />
+				</View>
 			</View>
 		</View>
 	);
@@ -112,7 +115,7 @@ const Caption = ({ post }) => (
 		</Text>
 	</View>
 );
-const Comment = ({ post }) => (
+const CommentsSection = ({ post }) => (
 	<View>
 		{!!post.comments.length && (
 			<Text style={{ color: 'gray' }}>
@@ -121,6 +124,18 @@ const Comment = ({ post }) => (
 			</Text>
 		)}
 	</View>
+);
+
+const Comments = ({ post }) => (
+	<>
+		{post.comments.map((comment, index) => (
+			<View key={index} style={{ flexDirection: 'row', marginTop: 5 }}>
+				<Text style={{ color: 'white' }}>
+					<Text style={{ fontWeight: '700' }}>{comment.user}</Text> {comment.comment}
+				</Text>
+			</View>
+		))}
+	</>
 );
 
 export default Post;
