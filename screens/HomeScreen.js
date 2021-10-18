@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import BottomTabs from '../components/home/BottomTabs';
 import Header from '../components/home/Header';
 import Post from '../components/home/Post';
 import Stories from '../components/home/Stories';
@@ -9,7 +10,6 @@ import { POSTS } from '../data/post';
 const HomeScreen = () => {
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text>Hola desde Home</Text>
 			<Header />
 			<Stories />
 			<ScrollView>
@@ -17,6 +17,7 @@ const HomeScreen = () => {
 					<Post post={post} key={index} />
 				))}
 			</ScrollView>
+			<BottomTabs />
 		</SafeAreaView>
 	);
 };
