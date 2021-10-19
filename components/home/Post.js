@@ -7,7 +7,7 @@ import { postFooterIcons } from '../../data/icons';
 const Post = ({ post }) => {
 	return (
 		<View style={{ marginBottom: 20 }}>
-			<Divider width={0.3} orientation="vertical" />
+			<Divider width={0.23} orientation="vertical" color="rgba(255,255,255,0.2)" />
 			<PostHeader post={post} />
 			<PostImage post={post} />
 			<View>
