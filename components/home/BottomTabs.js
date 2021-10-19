@@ -6,13 +6,14 @@ import { bottomIcons } from '../../data/bottomIcons';
 
 const BottomTabs = () => {
 	const [activeTab, setActiveTab] = useState('Home');
+	console.log(activeTab);
 
 	return (
 		<View>
 			<View>
-				<Divider width={0.3} orientation="horizontal" color="rgba(5,25,255,0.56917)" />
+				<Divider width={0.3} orientation="horizontal" color="rgba(0,0,9,0.56917)" />
 
-				<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 5 }}>
+				<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 17 }}>
 					<TouchableOpacity onPress={(e) => setActiveTab(bottomIcons[0].name)}>
 						<Icon
 							type={bottomIcons[0].type}
@@ -67,14 +68,20 @@ const BottomTabs = () => {
 						/>
 					</TouchableOpacity>
 
-					<View>
+					<TouchableOpacity onPress={() => setActiveTab(bottomIcons[4].name)}>
 						<Image
-							style={styles.image}
+							style={[
+								styles.image,
+								bottomIcons[4].name === 'Profile' ? styles.imageTouched() : null,
+								activeTab === 'Profile' && bottomIcons[4].name === activeTab
+									? styles.imageTouched(activeTab)
+									: null,
+							]}
 							source={{
 								uri: 'https://res.cloudinary.com/dqaerysgb/image/upload/v1628020663/samples/food/spices.jpg',
 							}}
 						/>
-					</View>
+					</TouchableOpacity>
 				</View>
 			</View>
 		</View>
@@ -94,9 +101,14 @@ const styles = StyleSheet.create({
 	image: {
 		width: 24,
 		height: 24,
-		// borderRadius: 50,
+		borderRadius: 50,
 		marginLeft: 6,
-		borderWidth: 0.18,
-		borderColor: '#ff8501',
+		borderColor: '#fff',
+		borderWidth: 0.21,
 	},
+	imageTouched: (activeTab = '') => ({
+		borderWidth: activeTab === 'Profile' ? 1 : 0,
+		width: activeTab === 'Profile' ? 26 : 24,
+		height: activeTab === 'Profile' ? 26 : 24,
+	}),
 });
