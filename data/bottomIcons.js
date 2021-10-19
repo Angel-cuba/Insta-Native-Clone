@@ -27,4 +27,7 @@ export const bottomIcons = [
 		colorActive: 'white',
 		colorInactive: 'gray',
 	},
+	{
+		name: 'Profile',
+	},
 ];
