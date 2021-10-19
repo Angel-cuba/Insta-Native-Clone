@@ -1,26 +1,28 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
 const Header = () => {
 	return (
-		<View style={styles.container}>
-			<TouchableOpacity>
-				<Image style={styles.image} source={require('../../assets/insta1.png')} />
-			</TouchableOpacity>
-			<View style={styles.iconsContainer}>
-				<TouchableOpacity style={styles.icon}>
-					<FontAwesome name="plus-square-o" size={24} color="white" />
+		<View style={Platform.OS === 'android' && styles.android}>
+			<View style={styles.container}>
+				<TouchableOpacity>
+					<Image style={styles.image} source={require('../../assets/insta1.png')} />
 				</TouchableOpacity>
-				<TouchableOpacity style={styles.icon}>
-					<AntDesign name="hearto" size={24} color="white" />
-				</TouchableOpacity>
-				<TouchableOpacity style={styles.icon}>
-					<View style={styles.unreadBadge}>
-						<Text style={styles.unreadBadgeText}>11</Text>
-					</View>
-					<AntDesign name="message1" size={24} color="white" />
-				</TouchableOpacity>
+				<View style={styles.iconsContainer}>
+					<TouchableOpacity style={styles.icon}>
+						<FontAwesome name="plus-square-o" size={24} color="white" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.icon}>
+						<AntDesign name="hearto" size={24} color="white" />
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.icon}>
+						<View style={styles.unreadBadge}>
+							<Text style={styles.unreadBadgeText}>11</Text>
+						</View>
+						<AntDesign name="message1" size={24} color="white" />
+					</TouchableOpacity>
+				</View>
 			</View>
 		</View>
 	);
@@ -35,6 +37,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		marginHorizontal: 20,
 	},
+	android: {
+		marginTop: 25,
+	},
 	image: {
 		width: 100,
 		height: 60,
@@ -44,7 +49,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 	},
 	icon: {
-		marginLeft: 14,
+		marginLeft: 18,
 	},
 	unreadBadge: {
 		backgroundColor: '#FF3250',
