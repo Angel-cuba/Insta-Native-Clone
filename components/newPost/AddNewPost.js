@@ -5,17 +5,17 @@ import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import FormikPost from './FormikPost';
 
-const AddNewPost = () => (
+const AddNewPost = ({ navigation }) => (
 	<View style={styles.container}>
-		<Header />
-		<FormikPost />
+		<Header navigation={navigation} />
+		<FormikPost navigation={navigation} />
 	</View>
 );
 
-const Header = () => (
+const Header = ({ navigation }) => (
 	<SafeAreaView style={Platform.OS === 'android' && styles.android}>
 		<View style={[styles.headerContainer]}>
-			<TouchableOpacity>
+			<TouchableOpacity onPress={() => navigation.goBack()}>
 				<FontAwesome name="angle-left" size={24} color="white" />
 			</TouchableOpacity>
 			<Text style={styles.headerText}>New post</Text>
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
 		marginRight: 25,
 	},
 	android: {
-		marginTop: 15,
+		marginTop: 32,
 	},
 });
