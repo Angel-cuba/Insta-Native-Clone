@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
 
-const Header = () => {
+const Header = ({ navigation }) => {
 	return (
 		<View style={Platform.OS === 'android' && styles.android}>
 			<View style={styles.container}>
@@ -10,7 +10,7 @@ const Header = () => {
 					<Image style={styles.image} source={require('../../assets/insta1.png')} />
 				</TouchableOpacity>
 				<View style={styles.iconsContainer}>
-					<TouchableOpacity style={styles.icon}>
+					<TouchableOpacity style={styles.icon} onPress={() => navigation.push('NewPostScreen')}>
 						<FontAwesome name="plus-square-o" size={24} color="white" />
 					</TouchableOpacity>
 					<TouchableOpacity style={styles.icon}>
