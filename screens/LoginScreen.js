@@ -6,7 +6,7 @@ import LoginForm from '../components/loginScreen/LoginForm';
 
 const INSTA_LOGO = 'https://res.cloudinary.com/dqaerysgb/image/upload/v1632245932/paris_mulhc4.jpg';
 
-const LoginScreen = () => (
+const LoginScreen = ({ navigation }) => (
 	<View style={styles.container}>
 		<View style={styles.logoContainer}>
 			<Image
@@ -14,7 +14,7 @@ const LoginScreen = () => (
 				source={require('../assets/insta.png')}
 			/>
 		</View>
-		<LoginForm />
+		<LoginForm navigation={navigation} />
 	</View>
 );
 
