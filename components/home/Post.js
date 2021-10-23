@@ -1,19 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Divider, Icon, Image } from 'react-native-elements';
 import { FontAwesome, MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
 import { postFooterIcons } from '../../data/icons';
+import { firebase, db } from '../../firebase';
 
 const Post = ({ post }) => {
+	const [postAmount, setPostAmomunt] = useState([]);
+
+	useEffect(() => {
+		if (post.likes_by_user.length) setPostAmomunt(post.likes_by_user.length);
+	}, []);
+
+	const handleLike = (post) => {
+		const currentLikeStatus = !post.likes_by_user.includes(firebase.auth().currentUser.email);
+		db.collection('users')
+			.doc(post.owner_email)
+			.collection('posts')
+			.doc(post.id)
+			.update({
+				likes_by_user: currentLikeStatus
+					? firebase.firestore.FieldValue.arrayUnion(firebase.auth().currentUser.email)
+					: firebase.firestore.FieldValue.arrayRemove(firebase.auth().currentUser.email),
+			})
+			.then(() => {
+				console.log('Document updated');
+			})
+			.catch((error) => {
+				console.log('Error updating document: ', error);
+			});
+	};
+
 	return (
 		<View style={{ marginBottom: 20 }}>
 			<Divider width={0.23} orientation="vertical" color="rgba(255,255,255,0.2)" />
 			<PostHeader post={post} />
 			<PostImage post={post} />
 			<View>
-				<PostFooter />
+				<PostFooter post={post} handleLike={handleLike} />
 				<View style={{ marginHorizontal: 3 }}>
-					<Likes post={post} />
+					<Likes post={post} postAmount={postAmount} />
 					<Caption post={post} />
 					<CommentsSection post={post} />
 					<Comments post={post} />
@@ -38,23 +64,31 @@ const PostImage = ({ post }) => (
 	<View
 		style={{
 			width: '100%',
-			height: 450,
+			height: 400,
 		}}
 	>
 		<Image source={{ uri: post.imageUrl }} style={styles.postImage} />
 	</View>
 );
 
-const PostFooter = () => (
+const PostFooter = ({ handleLike, post }) => (
 	<View style={styles.postFooter}>
 		<View style={{ flexDirection: 'row' }}>
-			<TouchableOpacity style={{ paddingRight: 8 }}>
+			<TouchableOpacity style={{ paddingRight: 8 }} onPress={() => handleLike(post)}>
 				<Icon
 					type={postFooterIcons[0].type}
 					imageStyle={styles.footerIcon}
-					name={postFooterIcons[0].icon}
+					name={
+						post.likes_by_user.includes(firebase.auth().currentUser.email)
+							? postFooterIcons[0].likedIcon.likedIcon
+							: postFooterIcons[0].icon
+					}
 					size={24}
-					color={postFooterIcons[0].color}
+					color={
+						post.likes_by_user.includes(firebase.auth().currentUser.email)
+							? postFooterIcons[0].likedIcon.color
+							: postFooterIcons[0].color
+					}
 				/>
 			</TouchableOpacity>
 			<TouchableOpacity style={{ paddingRight: 8 }}>
@@ -87,22 +121,18 @@ const PostFooter = () => (
 				/>
 			</TouchableOpacity>
 		</View>
-
-		{/* <Icon type="ant-design" name="hearto" size={24} color={postFooterIcons[0].color} /> */}
-		{/* <Icon imageStyle={styles.footerIcon} imageUrl={postFooterIcons[0].imageUrl} /> */}
 	</View>
 );
 
-// const Icon = ({ imageStyle, imageUrl }) => (
-// 	<TouchableOpacity>
-// 		<AntDesign style={imageStyle} name={imageUrl} size={24} color="white" />
-// 		{/* <Image style={imageStyle} source={{ uri: imageUrl }} /> */}
-// 	</TouchableOpacity>
-// );
-const Likes = ({ post }) => (
-	<View style={{ flexDirection: 'row', marginTop: 4 }}>
+const Likes = ({ post, postAmount }) => (
+	<View style={styles.likes(postAmount)}>
 		<Text style={{ color: 'white', fontWeight: 'bold' }}>
-			{post.likes.toLocaleString('en')} likes
+			{post.likes_by_user.length === 1 ? (
+				<Text>{post.likes_by_user.length.toLocaleString('en')} Like</Text>
+			) : null}
+			{post.likes_by_user.length > 1 && (
+				<Text>{post.likes_by_user.length.toLocaleString('en')} Likes</Text>
+			)}
 		</Text>
 	</View>
 );
@@ -166,7 +196,8 @@ const styles = StyleSheet.create({
 	},
 	postImage: {
 		height: '100%',
-		resizeMode: 'cover',
+		width: '100%',
+		resizeMode: 'contain',
 	},
 	footerIcon: {
 		width: 33,
@@ -178,4 +209,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: 5,
 		marginTop: 10,
 	},
+	likes: (postAmount) => ({
+		flexDirection: 'row',
+		height: postAmount >= 1 ? 20 : 0,
+	}),
 });
