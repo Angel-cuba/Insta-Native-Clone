@@ -38,12 +38,14 @@ const SignUpForm = ({ navigation }) => {
 			const authUser = await firebase.auth().createUserWithEmailAndPassword(email, password);
 			console.log('inside', email, password);
 
-			db.collection('users').add({
-				owner_uid: authUser.user.uid,
-				username: username,
-				email: authUser.user.email,
-				profile_picture: await getRandomProfilePicture(),
-			});
+			db.collection('users')
+				.doc(authUser.user.email)
+				.set({
+					owner_uid: authUser.user.uid,
+					username: username,
+					email: authUser.user.email,
+					profile_picture: await getRandomProfilePicture(),
+				});
 		} catch (error) {
 			Alert.alert('🔐 Yoooo', error.message);
 		}
