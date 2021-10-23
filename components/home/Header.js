@@ -1,12 +1,24 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { FontAwesome, AntDesign } from '@expo/vector-icons';
+import { firebase } from '../../firebase';
 
 const Header = ({ navigation }) => {
+	const SignOut = async () => {
+		try {
+			await firebase
+				.auth()
+				.signOut()
+				.then(() => console.log('Out'));
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
 		<View style={Platform.OS === 'android' && styles.android}>
 			<View style={styles.container}>
-				<TouchableOpacity>
+				<TouchableOpacity onPress={SignOut}>
 					<Image style={styles.image} source={require('../../assets/insta1.png')} />
 				</TouchableOpacity>
 				<View style={styles.iconsContainer}>
