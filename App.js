@@ -9,6 +9,7 @@ import {
 	AppearanceProvider,
 	useColorScheme,
 } from 'react-native';
+import AuthNavigation from './AuthNavigation';
 import AddNewPost from './components/newPost/AddNewPost';
 import SignedInStack from './Navigation';
 import HomeScreen from './screens/HomeScreen';
@@ -21,7 +22,7 @@ export default function App() {
 	}
 	return (
 		<View style={styles.container}>
-			<SignedInStack />
+			<AuthNavigation />
 		</View>
 	);
 }
