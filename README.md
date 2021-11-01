@@ -1,2 +1,2 @@
 # Insta-Native-Clone
-Insta app usind React-Native and Firebase
+Insta app using React-Native and Firebase
